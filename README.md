@@ -1,228 +1,96 @@
-# 🚀 Terraform AWS EC2 Deployment (Infrastructure as Code)
+# 🚀 Terraform AWS EC2 Deployment
 
-This project demonstrates how to provision AWS infrastructure using **Terraform**.  
-It creates an EC2 instance automatically with:
+This project demonstrates how to create an AWS EC2 instance using **Terraform (Infrastructure as Code)**.
 
-- SSH access
-- HTTP access
-- Jenkins port access (8080)
-- Security group configuration
-- Key pair authentication
-- Public IP output
-
-This project follows **Infrastructure as Code (IaC)** principles used in real-world DevOps environments.
+Instead of creating resources manually in AWS Console, Terraform automates the entire setup.
 
 ---
 
-# 📌 Project Overview
+## 📌 What This Project Creates
 
-Terraform is used to automate AWS resource creation instead of manually configuring infrastructure in the AWS Console.
-
-This project provisions:
-
-✅ AWS EC2 instance  
-✅ AWS Security Group  
-✅ AWS Key Pair  
-✅ Public IP output  
+- ✅ EC2 Instance  
+- ✅ Security Group (Ports 22, 80, 8080 open)  
+- ✅ SSH Key Pair  
+- ✅ Public IP Output  
 
 ---
 
-# 🏗 Architecture
+## 🛠 Technologies Used
 
-
-Terraform
-↓
-AWS Provider
-↓
-EC2 Instance + Security Group + Key Pair
-↓
-Public IP Output
-
-
----
-
-# 🛠 Tools & Technologies Used
-
-- **Terraform** → Infrastructure as Code tool
-- **AWS EC2** → Virtual Server
-- **AWS IAM** → Authentication & Authorization
-- **AWS CLI** → AWS configuration
-- **Ubuntu/Linux** → Operating system
-- **SSH** → Secure server access
-
----
-
-# ⚙ Prerequisites
-
-Before running this project, install:
-
-- Ubuntu/Linux system OR Killercoda Playground
-- AWS Account
 - Terraform
+- AWS EC2
+- AWS IAM
 - AWS CLI
-- IAM User with Administrator access
+- Ubuntu/Linux
+- SSH
 
 ---
 
-# 🚀 Setup Guide (Step-by-Step)
+## ⚙ Prerequisites
+
+Before running this project, you need:
+
+- AWS Account  
+- IAM User with programmatic access  
+- Terraform installed  
+- AWS CLI installed  
 
 ---
 
-## ✅ Step 1 — Install Terraform
+## 🚀 How to Run This Project
 
-### Install dependencies
+### 1️⃣ Configure AWS
 
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-Add Hashicorp GPG key
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-gpg --dearmor | \
-sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-Add repository
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-Install Terraform
-sudo apt update
-sudo apt-get install terraform
-Verify installation
-terraform -version
 
-✅ Step 2 — Install AWS CLI
-sudo apt update
-sudo apt-get install -y unzip curl
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
-
-Verify:
-
-aws --version
-✅ Step 3 — Create AWS IAM User
-
-Go to AWS Console → https://console.aws.amazon.com
-
-Open IAM service
-
-Create new user → terraform-user
-
-Select Programmatic access
-
-Attach policy → AdministratorAccess
-
-Download Access Key & Secret Key
-
-✅ Step 4 — Configure AWS CLI
 aws configure
 
-Enter:
+Enter your:
 
-Access Key → YOUR_ACCESS_KEY
-Secret Key → YOUR_SECRET_KEY
-Region → ap-south-1
-Output → json
+Access Key
 
-Test connection:
+Secret Key
 
-aws ec2 describe-regions
-✅ Step 5 — Generate SSH Key
-ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
+Region (example: ap-south-1)
 
-Get public key:
+Output format (json)
 
-cat ~/.ssh/id_rsa.pub
-
-Copy the output and paste it inside main.tf.
-
-📁 Project Structure
-terraform-aws-ec2/
-│
-├── main.tf
-├── README.md
-└── .gitignore
-🧩 Terraform Configuration
-
-This project creates:
-
-AWS provider configuration
-
-Key pair for SSH access
-
-Security group allowing ports 22, 80, 8080
-
-EC2 instance
-
-Public IP output
-
-▶ Running Terraform
-Initialize Terraform
+2️⃣ Initialize Terraform
 terraform init
-
-Downloads required AWS provider.
-
-Preview Infrastructure Changes
+3️⃣ Preview Changes
 terraform plan
-
-Shows what resources will be created.
-
-Create Infrastructure
+4️⃣ Create Infrastructure
 terraform apply
 
 Type:
 
 yes
 
-After successful execution:
+After successful execution, Terraform will show:
 
 instance_public_ip = xx.xx.xx.xx
-🔐 Connect to EC2 Instance
+🔐 Connect to EC2
 ssh -i ~/.ssh/id_rsa ubuntu@PUBLIC_IP
 
-You are now connected to your server.
+Replace PUBLIC_IP with the IP shown after apply.
 
-💸 Destroy Infrastructure (IMPORTANT)
+💸 Destroy Resources (Important)
 
 To avoid AWS charges:
 
 terraform destroy
 
 Type:
-
 yes
 
-Always destroy resources after testing.
-
-🔒 Security Best Practices
-
-Never upload AWS credentials to GitHub
-
-Never commit private SSH keys
-
-Always use .gitignore
-
-Destroy unused resources to avoid billing
-
-🎯 Key Terraform Concepts
-Concept	Description
-Provider	Cloud platform connection
-Resource	Infrastructure component
-State	Tracks infrastructure
-Plan	Preview changes
-Apply	Create infrastructure
-Destroy	Delete infrastructure
-
-🌟 Learning Outcomes
-
-After completing this project you will understand:
+🎯 What You Learn
 
 Infrastructure as Code (IaC)
 
-AWS automation using Terraform
-
-EC2 provisioning
+AWS EC2 automation
 
 Security group configuration
 
-Cloud deployment workflow
-
-DevOps infrastructure management
+Terraform workflow (init → plan → apply → destroy)
 
 👨‍💻 Author
 
