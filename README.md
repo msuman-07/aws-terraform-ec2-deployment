@@ -54,11 +54,13 @@ Region (example: ap-south-1)
 
 Output format (json)
 
-2️⃣ Initialize Terraform
+### 2️⃣ Initialize Terraform
 terraform init
-3️⃣ Preview Changes
+
+### 3️⃣ Preview Changes
 terraform plan
-4️⃣ Create Infrastructure
+
+### 4️⃣ Create Infrastructure
 terraform apply
 
 Type:
@@ -68,12 +70,17 @@ yes
 After successful execution, Terraform will show:
 
 instance_public_ip = xx.xx.xx.xx
-🔐 Connect to EC2
+
+---
+
+### 🔐 Connect to EC2
 ssh -i ~/.ssh/id_rsa ubuntu@PUBLIC_IP
 
 Replace PUBLIC_IP with the IP shown after apply.
 
-💸 Destroy Resources (Important)
+---
+
+### 💸 Destroy Resources (Important)
 
 To avoid AWS charges:
 
@@ -82,16 +89,17 @@ terraform destroy
 Type:
 yes
 
-🎯 What You Learn
+---
 
-Infrastructure as Code (IaC)
+### 🎯 What You Learn
 
-AWS EC2 automation
+-> Infrastructure as Code (IaC)
+-> AWS EC2 automation
+-> Security group configuration
+-> Terraform workflow (init → plan → apply → destroy)
 
-Security group configuration
+---
 
-Terraform workflow (init → plan → apply → destroy)
-
-👨‍💻 Author
+### 👨‍💻 Author
 
 Suman M
