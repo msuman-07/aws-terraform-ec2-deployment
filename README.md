@@ -90,6 +90,15 @@ Type:
 yes
 
 ---
+## 📸 Screenshots
+
+### Terraform Apply Output
+![Terraform Apply](images/terraform-apply-output.png)
+
+### EC2 Instance Running
+![EC2 Instance](images/ec2-instance-running.png)
+
+---
 
 ### 🎯 What You Learn
 
