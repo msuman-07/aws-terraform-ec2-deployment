@@ -51,7 +51,7 @@ resource "aws_instance" "ubuntu" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "Ananth-EC2"
+    Name = "Suman-EC2"
   }
 }
 
