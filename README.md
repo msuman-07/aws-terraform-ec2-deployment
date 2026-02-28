@@ -71,7 +71,7 @@ Before running this project, install:
 ## ✅ Step 1 — Install Terraform
 
 ### Install dependencies
-```bash
+
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
 Add Hashicorp GPG key
 wget -O- https://apt.releases.hashicorp.com/gpg | \
@@ -84,6 +84,7 @@ sudo apt update
 sudo apt-get install terraform
 Verify installation
 terraform -version
+
 ✅ Step 2 — Install AWS CLI
 sudo apt update
 sudo apt-get install -y unzip curl
@@ -206,6 +207,7 @@ State	Tracks infrastructure
 Plan	Preview changes
 Apply	Create infrastructure
 Destroy	Delete infrastructure
+
 🌟 Learning Outcomes
 
 After completing this project you will understand:
@@ -225,33 +227,3 @@ DevOps infrastructure management
 👨‍💻 Author
 
 Suman M
-Artificial Intelligence Engineer | DevOps Learner
-
-⭐ Future Improvements
-
-Deploy Jenkins automatically
-
-Add VPC configuration
-
-Use Terraform variables
-
-Add load balancer
-
-Multi-instance deployment
-
-CI/CD pipeline integration
-
-
----
-
-## ✅ How To Use This
-
-1. Create file:
-```bash
-nano README.md
-
-Paste everything above.
-
-Save:
-
-CTRL + X → Y → Enter
