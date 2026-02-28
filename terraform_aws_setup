@@ -1,0 +1,209 @@
+STEP 1 — Install Terraform (Ubuntu / Killercoda / Linux)
+
+Run one by one in terminal.
+
+Install dependencies -
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+
+Add Hashicorp GPG key - 
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+gpg --dearmor | \
+sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+
+Verify key - 
+gpg --no-default-keyring \
+--keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
+--fingerprint
+
+Add repository - 
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+Install Terraform - 
+sudo apt update
+sudo apt-get install terraform
+
+Verify installation -
+terraform -version
+
+##If version prints then Terraform installed
+
+STEP 2 — Install AWS CLI
+
+Install packages - 
+sudo apt update
+sudo apt-get install -y unzip curl
+
+Download AWS CLI -
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+Install - 
+unzip awscliv2.zip
+sudo ./aws/install
+
+Verify -
+aws --version
+
+
+STEP 3 — Create AWS IAM User
+
+Terraform needs AWS permissions.
+
+## Go to AWS Console - 
+https://console.aws.amazon.com
+
+Create IAM User:
+
+1. Search → IAM
+2. Users → Create user
+3. Username → terraform-user
+4. Select → Programmatic access
+5. Attach policy → AdministratorAccess
+6. Create user
+7. Download Access Key + Secret Key
+
+Save them.
+
+STEP 4 — Configure AWS CLI
+
+Run -
+aws configure
+
+Enter:
+
+Access Key → (from IAM)
+Secret Key → (from IAM)
+Region → ap-south-1
+Output → json
+
+Test connection:
+aws ec2 describe-regions
+
+If works then AWS connected 
+
+STEP 5 — Generate SSH Key (for EC2 login)
+
+Terraform will upload this to AWS.
+
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
+
+Now get public key:
+cat ~/.ssh/id_rsa.pub
+
+Copy output — you’ll paste inside Terraform code.
+
+STEP 6 — Create Terraform Project
+
+Create folder -
+mkdir terraform-ec2
+cd terraform-ec2
+
+Create file -
+nano main.tf
+
+Paste this (replace your public key):
+
+Complete Working Terraform Code - (Paste the code from the file named main.tf in repo)
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_key_pair" "deployer" {
+  key_name   = "newssss"
+  public_key = "PASTE YOUR SSH PUBLIC KEY HERE"
+}
+
+resource "aws_security_group" "allow_ports" {
+  name        = "allow_ssh_http_jenkins"
+  description = "Allow SSH, HTTP, and Jenkins"
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Jenkins"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "ubuntu" {
+  ami                         = "ami-0f5ee92e2d63afc18"
+  instance_type               = "t3.micro"
+  key_name                    = aws_key_pair.deployer.key_name
+  vpc_security_group_ids      = [aws_security_group.allow_ports.id]
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "Suman-EC2"
+  }
+}
+
+output "instance_public_ip" {
+  value = aws_instance.ubuntu.public_ip
+}
+
+Save:
+
+CTRL + X → Y → Enter
+
+STEP 7 — Run Terraform
+
+Initialize -
+terraform init
+
+Downloads AWS provider.
+
+Check plan (what will be created) -
+terraform plan
+
+Create EC2 -
+terraform apply
+
+Type:
+yes
+
+Result - 
+You will see:
+
+instance_public_ip = xx.xx.xx.xx
+
+Then EC2 created successfully.
+
+STEP 8 — Connect to EC2
+Use IP from output -
+
+ssh -i ~/.ssh/id_rsa ubuntu@PUBLIC_IP
+
+You are inside EC2 server
+
+STEP 9 — Destroy Resources (IMPORTANT — avoid AWS charges)
+
+After learning:
+terraform destroy
+
+Type yes.
+
+Always destroy to avoid billing.
