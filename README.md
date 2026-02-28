@@ -100,15 +100,6 @@ yes
 
 ---
 
-### 🎯 What You Learn
-
--> Infrastructure as Code (IaC)
--> AWS EC2 automation
--> Security group configuration
--> Terraform workflow (init → plan → apply → destroy)
-
----
-
 ### 👨‍💻 Author
 
 Suman M
